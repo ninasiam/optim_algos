@@ -17,17 +17,13 @@ def main():
     print("Solution via Nesterov")
     (fval_nes, iter_nes) = QuadraticUncon.accel_gradient_descent(P, q, x, 1/stepsize, f_val_init, max_iter=100, mu=mu, criterion='gradient_norm', momentum='mu_s_convex')
 
-    plt.subplot(2, 1, 1)
-
     # Make the first plot
     plt.plot(fval_grad[0:iter_gd])
-    plt.title('Gradient Descent')
-
-    # Set the second subplot as active, and make the second plot.
-    plt.subplot(2, 1, 2)
     plt.plot(fval_nes[0:iter_nes])
-    plt.title('Nesterov')
-
+    plt.xlabel('iterations')
+    plt.ylabel('f_value')
+    plt.title('Compare first order algorithms on quadratic problem')
+    plt.grid()
     plt.show()
 
 if __name__ == '__main__':
