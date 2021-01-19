@@ -9,8 +9,9 @@ from create_data import create_data_quad
 def main():
 
     print("Gradient descent for quadratic problem")
-    dim = 100                                                            # shape of the square matrix
-    P, q, x, stepsize, mu, f_val_init = create_data_quad(dim=dim)
+    m = 100
+    n = 50
+    P, q, x, stepsize, mu, f_val_init = create_data_quad(dims=tuple([m, n]))
     print("Solution via gradient")
     (fval_grad, iter_gd) = QuadraticUncon.gradient_descent(P, q, x, 1/stepsize, f_val_init, criterion='gradient_norm', max_iter=100)
     print("Solution via Nesterov")
