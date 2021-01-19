@@ -3,37 +3,7 @@ import matplotlib.pyplot as plt
 from numpy import linalg as LA
 from numpy.linalg import matrix_rank
 from optim_algorithms import QuadraticUncon
-
-
-def create_data_quad(dim):
-
-    # Create a positive Definite matrix P
-    P_tmp = np.random.rand(dim, dim)
-    P = P_tmp.T@P_tmp
-    U, S, Vh = np.linalg.svd(P, full_matrices=True)
-    eigs_tmp = np.random.rand(dim)
-    eigs = (eigs_tmp+1)*1100
-    P = (U@np.diag(eigs))@Vh
-
-    # Create q in the column space of P
-    x_tmp = np.random.rand(dim, 1)
-    q = np.dot(P, x_tmp)
-
-    # Compute the optimal values
-    x_star = -np.dot(LA.pinv(P), q)
-    f_star = (1/2)*(x_star.T@P@x_star) + q.T@x_star
-    print(f"Optimal Value: {f_star[0][0]}")
-
-    # Initialize parameters
-    x_init = np.random.rand(dim, 1)
-    f_val_init = (1/2)*(x_init.T@P@x_init) + q.T@x_init
-    print(f"Initial Value: {f_val_init[0][0]}")
-    print("Condition Number of the problem")
-    print(np.amax(eigs)/np.amin(eigs))
-
-    L = np.amax(eigs)
-    mu = np.amin(eigs)
-    return P, q, x_init, L, mu, f_val_init[0][0]
+from create_data import create_data_quad
 
 
 def main():

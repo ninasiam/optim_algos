@@ -1,0 +1,52 @@
+import numpy as np
+import matplotlib.pyplot as plt
+from numpy import linalg as LA
+from numpy.linalg import matrix_rank
+from nptyping import NDArray
+from optim_algorithms import QuadraticUncon
+
+
+def create_data_quad(dim):
+    """Creates matrix P, vector q for (1/2)x^TPx + qx quadratic problem
+    :arg
+        dim (int): dimension of the parameter
+    :returns
+        P (NDArray[float]): a positive define matrix in (1/2)x^TPx + qx
+        q (NDArray[float]): the vector in (1/2)x^TPx + qx
+        x_init (NDArray[float]): the initial value of the parameter x
+        L (float): maximum eigenvalue of the Hessian matrix (smoothness parameter)
+        mu (float): minimum eigenvalue of the Hessian matrix (strong convexity parameter)
+        f_val_init (float): initial value of the cost function
+    """
+    # Create a positive Definite matrix P
+    P_tmp = np.random.rand(dim, dim)
+    P = P_tmp.T@P_tmp
+    U, S, Vh = np.linalg.svd(P, full_matrices=True)
+    eigs_tmp = np.random.rand(dim)
+    eigs = (eigs_tmp+1)*1100
+    P = (U@np.diag(eigs))@Vh
+
+    # Create q in the column space of P
+    x_tmp = np.random.rand(dim, 1)
+    q = np.dot(P, x_tmp)
+
+    # Compute the optimal values
+    x_star = -np.dot(LA.pinv(P), q)
+    f_star = (1/2)*(x_star.T@P@x_star) + q.T@x_star
+    print(f"Optimal Value: {f_star[0][0]}")
+
+    # Initialize parameters
+    x_init = np.random.rand(dim, 1)
+    f_val_init = (1/2)*(x_init.T@P@x_init) + q.T@x_init
+    print(f"Initial Value: {f_val_init[0][0]}")
+    print("Condition Number of the problem")
+    print(np.amax(eigs)/np.amin(eigs))
+
+    L = np.amax(eigs)
+    mu = np.amin(eigs)
+    return P, q, x_init, L, mu, f_val_init[0][0]
+
+
+if __name__ == '__main__':
+    pass
+
