@@ -50,13 +50,9 @@ class QuadraticUncon:
             x = x_next
             print(f"f_value: {f_val_iter[0][0]} at iteration: {iter}")
 
-            if criterion == 'gradient_norm' and LA.norm(gradient) < epsilon:
-                print("Terminating Condition attained")
-                break
-            elif criterion == 'max_iterations' and iter > max_iter:
-                print("Terminating Condition attained")
-                break
-            elif criterion == 'rel_change' and LA.norm(x - x_prev) < epsilon:
+            if (criterion == 'gradient_norm' and LA.norm(gradient) < epsilon) \
+               or (criterion == 'max_iterations' and iter > max_iter) \
+               or (criterion == 'rel_change' and LA.norm(x - x_prev) < epsilon):
                 print("Terminating Condition attained")
                 break
             else:
@@ -106,13 +102,9 @@ class QuadraticUncon:
             x = x_next
             y = y_next
             print(f"f_value: {f_val_iter[0][0]} at iteration: {iter}")
-            if criterion == 'gradient_norm' and LA.norm(gradient) < epsilon:
-                print("Terminating Condition attained")
-                break
-            elif criterion == 'max_iterations' and iter > max_iter:
-                print("Terminating Condition attained")
-                break
-            elif criterion == 'rel_change' and LA.norm(x - x_prev) < epsilon:
+            if (criterion == 'gradient_norm' and LA.norm(gradient) < epsilon) \
+                    or (criterion == 'max_iterations' and iter > max_iter) \
+                    or (criterion == 'rel_change' and LA.norm(x - x_prev) < epsilon):
                 print("Terminating Condition attained")
                 break
             else:
