@@ -1,6 +1,6 @@
 # optim_algos
 
-## Implementations of algorithms for solving basic but often encountered optimizations problems for educational purposes.
+## Implementations of algorithms for solving basic but often encountered optimization problems for educational purposes.
 
   1.  Python directory: numpy, nptyping, matplotlib are required 
         - Available Objectives:
