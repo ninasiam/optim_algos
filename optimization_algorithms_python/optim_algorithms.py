@@ -21,7 +21,7 @@ class QuadraticUncon:
 
     @staticmethod
     def gradient_descent(P: NDArray[float], q: NDArray[float], x: NDArray[float], stepsize: float,
-                         f_val_init: float, max_iter=1000, epsilon=10e-4, criterion=None) -> (list, int):
+                         f_val_init: float, max_iter=1000, epsilon=10e-4, criterion=None) -> tuple:
         """ Gradient Descent for the unconstrained Quadratic problem (1/2)x^TPx + qx
         :arg
         P (NDArray[float]): a positive define matrix in (1/2)x^TPx + qx
@@ -63,7 +63,7 @@ class QuadraticUncon:
     @staticmethod
     def accel_gradient_descent(P: NDArray[float], q: NDArray[float], x: NDArray[float], stepsize: float, f_val_init: float,
                                alpha=1, beta=0.3, mu=10e-6, max_iter=1000, epsilon=10e-4, criterion=None,
-                               momentum='mu_s_convex') -> (list, int):
+                               momentum='mu_s_convex') -> tuple:
         """ Accelerated Gradient Descent (Nesterov Accelerated Gradient) for the unconstrained Quadratic problem (1/2)x^TPx + qx
         :arg
         P (NDArray[float]): a positive define matrix in (1/2)x^TPx + qx
@@ -112,6 +112,46 @@ class QuadraticUncon:
 
         return f_val, iter
 
+    @staticmethod
+    def stochastic_gradient_descent(A: NDArray[float], b: NDArray[float], x: NDArray[float], stepsize: float, f_val_init: float,
+                               max_iter=1000, epsilon=10e-4, criterion=None) -> tuple:
+        """Stochastic Gradient Descent for (1/2)|| Ax - b||_2^2 quadratic problem.
+        :arg
+        A (NDArray[float]): a positive define matrix in (1/2)x^TPx + qx
+        b (NDArray[float]): the vector in (1/2)x^TPx + qx
+        x NDArray[float]: the parameter
+        stepsize (float): the stepsize for the gradient step
+        f_val_init (float): the initial cost function value
+        max_iter (int): maximum number of iterations
+        epsilon (float): tolerance
+        criterion (string): available 'gradient_norm', 'max_iterations', 'rel_change'
+
+        :returns
+        fval, iter (tuple): the cost function value at each iteration
+        """
+        # Decomposable cost function (preferably L2 norm)
+        iter = 1
+        f_val = []
+        f_val.append(f_val_init)
+        while iter < max_iter:
+            i = int(np.random.randint(low=0, high=A.shape[0], size=1))
+            gradient = (A[i, :]@x - b[i])*A[i, :].T
+            x_next = x - stepsize*gradient.reshape((x.shape))
+            f_val_iter = (1/2)*LA.norm(A@x_next - b) ** 2
+            f_val.append(f_val_iter)
+            x_prev = x
+            x = x_next
+            print(f"f_value: {f_val_iter} at iteration: {iter}")
+
+            if (criterion == 'gradient_norm' and LA.norm(gradient) < epsilon) \
+               or (criterion == 'max_iterations' and iter > max_iter) \
+               or (criterion == 'rel_change' and LA.norm(x - x_prev) < epsilon):
+                print("Terminating Condition attained")
+                break
+            else:
+                iter += 1
+
+        return f_val, iter
 
 if __name__ == '__main__':
     pass

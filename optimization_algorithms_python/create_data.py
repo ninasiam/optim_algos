@@ -49,6 +49,30 @@ def create_data_quad(dim):
 
     return P, q, x_init, eig_max, eig_min, f_val_init[0][0]
 
+def create_data_LS(dims):
+    """Creates matrix A, vector b for (1/2)|| Ax - b||_2^2 quadratic problem
+    :arg
+        dims (tuple): dimension of the parameter
+    :returns
+        A (NDArray[float]): a positive define matrix in (1/2)x^TPx + qx
+        b (NDArray[float]): the vector in (1/2)x^TPx + qx
+        x_init (NDArray[float]): the initial value of the parameter x
+        f_val_init (float): initial value of the cost function
+    """
+    A = np.random.normal(0, 1, size=dims)
+    # Create random vector q
+    b = np.random.normal(0, 1, size=(dims[0], 1))
+
+    # Compute the optimal values
+    x_star = np.dot(LA.pinv(A.T@A)@A.T, b)
+    f_star = (1/2)*LA.norm(A@x_star - b) ** 2
+    print(f"Optimal Value: {f_star}")
+    # Initialize parameters
+    x_init = np.zeros(shape=(dims[1], 1))
+    f_val_init = (1/2)*LA.norm(A@x_init - b) ** 2
+    print(f"Initial Value: {f_val_init}")
+
+    return A, b, x_init, f_val_init
 
 if __name__ == '__main__':
     pass

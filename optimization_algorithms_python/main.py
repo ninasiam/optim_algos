@@ -12,10 +12,11 @@ def main():
     n = 500
     P, q, x, stepsize, mu, f_val_init = create_data_quad(dim=n)
     print("Solution via GD")
-    (fval_grad, iter_gd) = QuadraticUncon.gradient_descent(P, q, x, 1/stepsize, f_val_init, criterion='gradient_norm', max_iter=1000)
+    (fval_grad, iter_gd) = QuadraticUncon.gradient_descent(P, q, x, 1/stepsize, f_val_init, criterion='gradient_norm', max_iter=100)
     print("Solution via NAG")
-    (fval_nes, iter_nes) = QuadraticUncon.accel_gradient_descent(P, q, x, 1/stepsize, f_val_init, max_iter=1000, mu=mu, criterion='gradient_norm', momentum='mu_s_convex')
+    (fval_nes, iter_nes) = QuadraticUncon.accel_gradient_descent(P, q, x, 1/stepsize, f_val_init, max_iter=100, mu=mu, criterion='gradient_norm', momentum='mu_s_convex')
 
+    
     # Make the first plot
     plt.plot(fval_grad[0:iter_gd], color='red')
     plt.plot(fval_nes[0:iter_nes])
