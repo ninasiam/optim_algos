@@ -5,9 +5,12 @@
   1.  Python directory: numpy, nptyping, matplotlib are required 
         - Available Objectives:
           - L-smooth, mu-strongly convex objective. 
+          - Least square objective, || Ax - b ||_2^2.
         - Available Algorithms:
           - Gradient Descent.
           - Accelerated Gradient Descent (Nesterov Accelerated Gradient).
+          - Stochastic gradient Descent.
+          
 ###### For both algorithmic settings the default values for the stepsize parameters are the optimal ones.
       
   2.  MatrixLS_Sparsity_Constraints: Eigen library is required (C++ code)
