@@ -111,7 +111,9 @@ class QuadraticUncon:
                 iter += 1
 
         return f_val, iter
-
+class LeastSquares:
+    """Class that contains algorithms for the Linear Least Squares problem """
+    
     @staticmethod
     def stochastic_gradient_descent(A: NDArray[float], b: NDArray[float], x: NDArray[float], stepsize: float, f_val_init: float,
                                max_iter=1000, epsilon=10e-4, criterion=None) -> tuple:
