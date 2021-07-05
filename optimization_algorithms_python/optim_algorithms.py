@@ -137,7 +137,7 @@ class LeastSquares:
         f_val.append(f_val_init)
         while iter < max_iter:
             i = int(np.random.randint(low=0, high=A.shape[0], size=1))
-            gradient = (A[i, :]@x - b[i])*A[i, :].T
+            gradient = (A[i, :]@x - b[i])*A[i, :].T # element wise
             x_next = x - stepsize*gradient.reshape((x.shape))
             f_val_iter = (1/2)*LA.norm(A@x_next - b) ** 2
             f_val.append(f_val_iter)
