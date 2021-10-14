@@ -14,7 +14,7 @@
 ###### For both algorithmic settings the default values for the stepsize parameters are the optimal ones.
       
   2.  MatrixLS_Sparsity_Constraints: Eigen library is required (C++ code).
-      Solving a Matrix Least Squares Problem under sparsity constraints.
+      Solving a Matrix Least Squares Problem under sparsity constraints. \
       Available Algorithms:
       - Alternating Direction Method of Multipliers (ADMM).
       - Fast Iterative Shrinkage/Thresholding Algorithm.
