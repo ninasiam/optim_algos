@@ -111,6 +111,49 @@ class QuadraticUncon:
                 iter += 1
 
         return f_val, iter
+
+    @staticmethod
+    def newton_method(P: NDArray[float], q: NDArray[float], x: NDArray[float], stepsize: float,
+                         f_val_init: float, max_iter=1000, epsilon=10e-4, criterion=None) -> tuple:
+        """ Newton method for the unconstrained Quadratic problem (1/2)x^TPx + qx
+        :arg
+        P (NDArray[float]): a positive define matrix in (1/2)x^TPx + qx
+        q (NDArray[float]): the vector in (1/2)x^TPx + qx
+        x NDArray[float]: the parameter
+        stepsize (float): the stepsize for the gradient step
+        f_val_init (float): the initial cost function value
+        max_iter (int): maximum number of iterations
+        epsilon (float): tolerance
+        criteriom (string): available 'gradient_norm', 'max_iterations', 'rel_change'
+
+        :returns
+        fval, iter (tuple): the cost function value at each iteration
+        """
+
+        iter = 1
+        f_val = []
+        f_val.append(f_val_init)
+        while iter < max_iter:
+
+            gradient = np.dot(P, x) + q
+            hessian = P + np.eye(P.shape[0])
+            x_next = x - stepsize*(LA.inv(hessian)@gradient)
+            f_val_iter = (1/2)*(x_next.T@P@x_next) + q.T@x_next
+            f_val.append(f_val_iter[0][0])
+            x_prev = x
+            x = x_next
+            print(f"f_value: {f_val_iter[0][0]} at iteration: {iter}")
+
+            if (criterion == 'gradient_norm' and LA.norm(gradient) < epsilon) \
+               or (criterion == 'max_iterations' and iter > max_iter) \
+               or (criterion == 'rel_change' and LA.norm(x - x_prev) < epsilon):
+                print("Terminating Condition attained")
+                break
+            else:
+                iter += 1
+
+        return f_val, iter
+
 class LeastSquares:
     """Class that contains algorithms for the Linear Least Squares problem """
     
@@ -154,6 +197,8 @@ class LeastSquares:
                 iter += 1
 
         return f_val, iter
+
+    
 
 if __name__ == '__main__':
     pass
